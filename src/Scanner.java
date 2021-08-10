@@ -95,6 +95,7 @@ public class Scanner {
             }else if(match('\0')){
                 Err.error("Unterminated string", line);
                 advance();
+                reset();
             }else{
                 advance();
             }
@@ -103,14 +104,14 @@ public class Scanner {
 
     private void buildDigit(){
 
-        while (isDigit(peek(0))) advance();
+        while (isDigit(peek(1))) advance();
 
         if (match('.')) advance();
 
-        while (isDigit(peek(0))) advance();
+        while (isDigit(peek(1))) advance();
 
         addToken(TokenType.NUMBER,
-                Double.parseDouble(input.substring(slowPointer, fastPointer)));
+                Double.parseDouble(input.substring(slowPointer, fastPointer+1)));
 
     }
 
@@ -183,11 +184,13 @@ public class Scanner {
                 case '\n':
                     line++;
                     advance();
+                    reset();
                     break;
                 case ' ':
                 case '\r':
                 case '\t':
                     advance();
+                    reset();
                     break;
                 default:
                     if (isDigit(c)){
@@ -197,6 +200,7 @@ public class Scanner {
                     }else{
                         Err.error("Unexpected char " + c, line);
                         advance();
+                        reset();
                     }
             }
         }
