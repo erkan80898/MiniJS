@@ -4,9 +4,12 @@ import java.util.List;
 
 public class MiniJS {
 
+    private static Parser parser;
+    private static Scanner scanner;
+    private static Expression ast;
+    private static List<Token> tokens;
+
     public static void main(String args[]) throws FileNotFoundException {
-        Scanner scanner;
-        List<Token> tokens;
 
         if (args.length > 0){
             runScanner(args[0]);
@@ -43,6 +46,11 @@ public class MiniJS {
             for (Token token : tokens){
                 System.out.println(token);
             }
+            System.out.println("----PARSING----");
+            parser = new Parser(tokens);
+            ast = parser.parse();
+            System.out.println(ast);
+
         }
     }
 

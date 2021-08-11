@@ -148,7 +148,7 @@ public class Scanner {
                         advance();
                         addToken(TokenType.DOUBLE_STAR, null);
                     } else {
-                        addToken(TokenType.STAR, null);
+                        addToken(TokenType.MUL, null);
                     } break;
                 case '=':
                     if (match('=')) {
