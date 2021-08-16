@@ -90,7 +90,7 @@ public class Scanner {
             // Keep scanning, even if its invalid - just report it
             if(match('"')) {
                 advance();
-                addToken(TokenType.STRING, input.substring(slowPointer, fastPointer + 1));
+                addToken(TokenType.STRING, input.substring(slowPointer+1, fastPointer));
                 break;
             }else if(match('\0')){
                 Err.error("Unterminated string", line);

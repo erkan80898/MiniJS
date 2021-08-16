@@ -84,12 +84,24 @@ public class Parser {
     }
 
     private Expression muldiv(){
-        Expression lhs = unary();
+        Expression lhs = square();
 
         while(match(TokenType.MUL, TokenType.DIV)){
             advance();
             Token op = tokens.get(current);
             Expression rhs = muldiv();
+            lhs = new Expression.Binary(lhs, op, rhs);
+        }
+        return lhs;
+    }
+
+    private Expression square(){
+        Expression lhs = unary();
+
+        while(match(TokenType.DOUBLE_STAR)){
+            advance();
+            Token op = tokens.get(current);
+            Expression rhs = square();
             lhs = new Expression.Binary(lhs, op, rhs);
         }
         return lhs;
@@ -128,8 +140,9 @@ public class Parser {
                 Expression exp = new Expression.Group(expression());
                 if (match(TokenType.R_PAREN)) {
                     advance();
-                    return expression();
+                    return exp;
                 } else {
+                    advance();
                     Err.error("Missing right parentheses for grouping - skipping");
                     return null;
                 }

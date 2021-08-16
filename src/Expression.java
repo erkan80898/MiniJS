@@ -3,6 +3,10 @@
  */
 abstract class Expression {
 
+    static private Visitor.Eval evalVisitor = new Visitor.Eval();
+
+    abstract Object eval();
+
     static class Unary extends Expression {
         final Token op;
         final Expression operand;
@@ -20,12 +24,8 @@ abstract class Expression {
             this.operand = operand;
         }
 
-        public Token getOp(){
-            return op;
-        }
-
-        public Expression getOperand(){
-            return operand;
+        public Object eval(){
+            return evalVisitor.eval(this);
         }
     }
 
@@ -40,18 +40,6 @@ abstract class Expression {
             this.rhs = rhs;
         }
 
-        public Expression getLhs() {
-            return lhs;
-        }
-
-        public Token getOp(){
-            return op;
-        }
-
-        public Expression getRhs(){
-            return rhs;
-        }
-
         @Override
         public String toString() {
             return "Binary{" +
@@ -59,6 +47,10 @@ abstract class Expression {
                     ", operator=" + op.lexeme +
                     ", rhs=" + rhs +
                     '}';
+        }
+
+        public Object eval(){
+            return evalVisitor.eval(this);
         }
     }
 
@@ -74,6 +66,10 @@ abstract class Expression {
                     "value=" + value +
                     '}';
         }
+
+        public Object eval(){
+            return evalVisitor.eval(this);
+        }
     }
 
     static class Group extends Expression {
@@ -87,6 +83,10 @@ abstract class Expression {
             return "Group{" +
                     "expression=" + expression +
                     '}';
+        }
+
+        public Object eval(){
+            return evalVisitor.eval(this);
         }
     }
 }

@@ -8,9 +8,9 @@ public class MiniJS {
     private static Scanner scanner;
     private static Expression ast;
     private static List<Token> tokens;
+    private static Evaluator evaluator = new Evaluator();
 
     public static void main(String args[]) throws FileNotFoundException {
-
         if (args.length > 0){
             runScanner(args[0]);
         }else{
@@ -19,8 +19,6 @@ public class MiniJS {
     }
 
     public static void runScanner(String filename){
-        Scanner scanner;
-        List<Token> tokens;
         File file = new File(filename);
         try (java.util.Scanner reader = new java.util.Scanner(file).useDelimiter("\\Z")){
             scanner = new Scanner(reader.next());
@@ -34,8 +32,6 @@ public class MiniJS {
 
     }
     public static void runScanner(){
-        Scanner scanner;
-        List<Token> tokens;
 
         while(true){
             System.out.print("> ");
@@ -50,7 +46,7 @@ public class MiniJS {
             parser = new Parser(tokens);
             ast = parser.parse();
             System.out.println(ast);
-
+            evaluator.eval(ast);
         }
     }
 
